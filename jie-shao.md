@@ -1,20 +1,14 @@
-> \* 原文地址：\[Getting Started\]\(https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html\#getting-started\)
+> \* 原文地址：\[Getting Start\]\(https://www.elastic.co/guide/en/elasticsearch/reference/2.2/index.html\)
 >
-> \* 原文作者：\[elastic\]\(https://www.elastic.co\)
+> \* 原文作者：\[elastic\]\([https://www.elastic.co\](https://www.elastic.co\)\)
 >
-> \* 译文出自：\[掘金翻译计划\]\(https://github.com/xitu/gold-miner\)
+> \* 译文出自：\[掘金翻译计划\]\([https://github.com/xitu/gold-miner\](https://github.com/xitu/gold-miner\)\)
 >
-> \* 本文永久链接：\[https://github.com/xitu/gold-miner/blob/master/TODO/getting-started-with-elastic.md\]\(https://github.com/xitu/gold-miner/blob/master/TODO/getting-started-with-elastic.md\)
+> \* 本文永久链接：[https://github.com/xitu/gold-miner/blob/master/TODO/getting-started-with-elastic.md](https://github.com/xitu/gold-miner/blob/master/TODO/getting-started-with-elastic.md]%28https://github.com/xitu/gold-miner/blob/master/TODO/getting-started-with-elastic.md\)
 >
 > \* 译者：code4j
 
-
-
-
-
 # Elasticsearch简介
-
-
 
 Elasticsearch 是一个高可扩展的开源全文搜索分析引擎，可以用它近实时的来存储、搜索和分析大量的数据。通常我们使用它作为底层引擎技术给拥有复杂搜索功能需求的应用赋能。
 
