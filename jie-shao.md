@@ -1,8 +1,6 @@
 > \* 原文地址：[Getting Start](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/index.html) 
 >
-> \* 原文作者：[https://www.elastic.com](https://www.elastic.co%29\)
->
-> \* 本文永久链接：[https://github.com/xitu/gold-miner/blob/master/TODO/getting-started-with-elastic.md](https://github.com/xitu/gold-miner/blob/master/TODO/getting-started-with-elastic.md]%28https://github.com/xitu/gold-miner/blob/master/TODO/getting-started-with-elastic.md\)
+> \* 原文作者：[https://www.elastic.com](https://www.elastic.com)
 >
 > \* 译者：[code4j](https://github.com/rpgmakervx)
 
