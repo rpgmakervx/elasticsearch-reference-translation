@@ -1,4 +1,4 @@
-> \* 原文地址：[Getting Start](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/index.html)
+> \* 原文地址：[Getting Start](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/index.html) 
 >
 > \* 原文作者：[https://www.elastic.com](https://www.elastic.co%29\)
 >
