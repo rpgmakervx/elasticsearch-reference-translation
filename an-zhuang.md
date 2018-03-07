@@ -1,3 +1,7 @@
+>* 文章名称：Elasticsearch Reference[2.2]
+>* 原文地址：[https://www.elastic.co/guide/en/elasticsearch/reference/2.2/_installation.html](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/_installation.html)
+>* 译者：[code4j](https://github.com/rpgmakervx)
+
 # 安装
 
 Elasticsearch 需要JDK版本最低1.7，特别是撰写本文时，建议你使用Oracle JDK版本1.8.0\_72，这里我们不关注不同Java版本的细节。Oracle推荐安装文档在此： [Oracle’s website](http://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html)。总之在你安装ES之前，使用以下命令检查你的Java环境：

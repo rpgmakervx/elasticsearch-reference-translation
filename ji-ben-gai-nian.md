@@ -1,3 +1,7 @@
+>* 文章名称：Elasticsearch Reference[2.2]
+>* 原文地址：[https://www.elastic.co/guide/en/elasticsearch/reference/2.2/_basic_concepts.html](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/_basic_concepts.html)
+>* 译者：[code4j](https://github.com/rpgmakervx)
+
 # 基本概念
 
 ES有一些基础概念，在学习之初就了解这些基础概念将会极大地简化您的学习过程
