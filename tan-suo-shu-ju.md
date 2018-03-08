@@ -26,7 +26,7 @@
 
 ## 加载样本数据
 
-你可以在[这里](https://github.com/elastic/elasticsearch/blob/master/docs/src/test/resources/accounts.json?raw=true)下载样本数据(accounts.json)，把它放到你的目录中，用如下语句把它加载到你的集群中：
+你可以在[这里](https://github.com/elastic/elasticsearch/blob/master/docs/src/test/resources/accounts.json?raw=true)下载样本数据 (accounts.json)，把它放到你的目录中，用如下语句把它加载到你的集群中：
 >curl -H "Content-Type: application/json" -XPOST "localhost:9200/bank/account/_bulk?pretty&refresh" --data-binary "@accounts.json"
 curl "localhost:9200/_cat/indices?v"
 
@@ -36,7 +36,7 @@ yellow open   bank  l7sSYV2cQXmu6_4rJWVIww   5   1       1000            0    12
 
 （**译者批注：创建索引时有短暂的状态为yellow或red是正常现象，因为创建索引的时候需要分配分片，如果集群繁忙创建会有一定延迟。**）
 
-响应内容说明我们成功的将1000条文档索引到了银行索引中（在`_doc`这个type下）
+响应内容说明我们成功的将1000条文档索引到了银行索引中（在 `_doc` 这个 type 下）
 
 ***
 
@@ -44,11 +44,11 @@ yellow open   bank  l7sSYV2cQXmu6_4rJWVIww   5   1       1000            0    12
 
 现在我们尝试一些简单的搜索，有两个基础的方法执行搜索：一种是将通过 [REST request URI](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/search-uri-request.html "URI Search")发送搜索参数，另一种是通过[REST request body](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/search-request-body.html "Request Body Search")发送搜索参数。请求体这种方法能让你的请求更具有表现力并且也需要你使用更可读的JSON格式。这里我们用一个示例演示URI 的请求方式，但是本教程剩余的部分，我们将只使用请求体这种方式
 （**译者批注：请求体灵活性安全性更强，更适合生产环境；测试数据或简单的排查数据可以使用URI的方式，更快捷**）
-
-Rest API的搜索方式使用`_search`结尾的方式访问，下面的例子将返回银行索引下的全部文档：
+ 
+Rest API 的搜索方式使用 `_search` 结尾的方式访问，下面的例子将返回银行索引下的全部文档：
 >curl 'localhost:9200/bank/_search?q=*&pretty'
 
-我们来进行第一次分析这个搜索请求。我们搜索（`_search结尾`）银行索引，并且参数 `q=*` 告诉Elasticsearch匹配全部文档，之前出现过的这个 `pretty` 参数，仅仅是告诉 Elasticsearch 返回格式化过的JSON。
+我们来进行第一次分析这个搜索请求。我们搜索（`_search结尾`）银行索引，并且参数 `q=*` 告诉 Elasticsearch 匹配全部文档，之前出现过的这个 `pretty` 参数，仅仅是告诉 Elasticsearch 返回格式化过的JSON。
 响应如下：
 ```json
 {
@@ -96,6 +96,7 @@ Rest API的搜索方式使用`_search`结尾的方式访问，下面的例子将
 我们将会在下一章节讨论JSON风格的查询。
 
 响应如下：
+
 ```json
 {
   "took" : 26,
@@ -128,6 +129,7 @@ Rest API的搜索方式使用`_search`结尾的方式访问，下面的例子将
 
 
 ***
+
 # 查询语句介绍
 
 Elasticsearch 提供了基于JSON风格的特定查询语法，供你执行查询操作。在 [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/query-dsl.html "Query DSL")
@@ -174,6 +176,7 @@ Elasticsearch 提供了基于JSON风格的特定查询语法，供你执行查�
 现在我们已经见过一些基本的搜索了，下面我们来发掘下更多的查询[DSL](http://blog.csdn.net/u010278882/article/details/50554299)。我们先来看一下搜索结果的字段，默认情况下所有查询都会返回完整的JSON文档，这个（完整的 JSON 文档）被称作 源（搜索命中结果的 `_source` 字段），如果我们不想返回整个文档，我们可以只从其中请求几个字段。
 
 下面的例子告诉我们搜索结果如何只返回 `account_number` 和  `balance` 两个字段。
+
 >curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": { "match_all": {} },
@@ -198,23 +201,26 @@ Elasticsearch 提供了基于JSON风格的特定查询语法，供你执行查�
   "query": { "match": { "address": "mill" } }
 }'
 
-下面的例子返回地址中包含`mill` 或 `lane`的全部文档。
+下面的例子返回地址中包含 `mill` 或 `lane` 的全部文档。
 >curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": { "match": { "address": "mill lane" } }
 }'
 
-（**译者批注：后面的查询语句都省略开头的command，大家只需要关注query体即可**）
+（**译者批注：后面的查询语句都省略开头的 command，大家只需要关注 query 体即可**）
 
-下面的例子是`match`查询的变种（`match_phrase`），返回地址字段包含词组`mill lane`的全部文档：
+下面的例子是 `match` 查询的变种（`match_phrase`），返回地址字段包含词组 `mill lane` 的全部文档：
+
 ```json
 {
   "query": { "match_phrase": { "address": "mill lane" } }
 }
 ```
+
 下面来介绍[`bool`(ean) query](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/query-dsl-bool-query.html "Bool Query")（**译者批注：布尔查询**）。布尔查询允许我们通过布尔逻辑将小的查询组合成大的查询。
 
-下面的例子组合了两个 `match` 查询，返回地址字段包含 `mill` 和 `lane`的全部文档。
+下面的例子组合了两个 `match` 查询，返回地址字段包含 `mill` 和  `lane` 的全部文档。
+
 ```json
 {
   "query": {
@@ -266,9 +272,10 @@ Elasticsearch 提供了基于JSON风格的特定查询语法，供你执行查�
 
 我们还可以同时组合`must` ，`should`，`must_not`这几个逻辑到一个布尔查询中，进一步说，我们还能组合多个布尔查询到其他任何布尔查询中，从而模拟复杂的多级布尔逻辑
 
-（**译者批注：类似SQL语句中AND OR 多层嵌套，只不过JSON表达比较麻烦，建议逻辑不要过于复杂，否则当你排查业务逻辑问题时看到N层query dsl会崩溃。。。**）
+（**译者批注：类似 SQL 语句中 AND OR 多层嵌套，只不过 JSON 表达比较麻烦，建议逻辑不要过于复杂，否则当你排查业务逻辑问题时看到N层 query dsl 会崩溃。。。**）
 
-下面的例子返回年龄是40岁但是不住在ID州的账户：
+下面的例子返回年龄是40岁但是不住在 ID 州的账户：
+
 ```json
 {
   "query": {
@@ -288,13 +295,14 @@ Elasticsearch 提供了基于JSON风格的特定查询语法，供你执行查�
 
 # 执行过滤
 
-之前的章节我们跳过了一个小细节，叫文档得分（搜索结果中的`_score`字段）。得分是一个数值类型的值，他能表示文档同我们指定的搜索条件的匹配度。得分越高，文档相关度越高，繁殖文档相关度越低。
+之前的章节我们跳过了一个小细节，叫文档得分（搜索结果中的 `_score` 字段）。得分是一个数值类型的值，他能表示文档同我们指定的搜索条件的匹配度。得分越高，文档相关度越高，繁殖文档相关度越低。
 
-但是查询也并不总是需要产出得分，特别是当他们只用于"过滤"文档集合的时候，Elasticsearch检测到这些情况并自动优化了查询执行过程避免了无用的评分计算。
+但是查询也并不总是需要产出得分，特别是当他们只用于"过滤"文档集合的时候，Elasticsearch 检测到这些情况并自动优化了查询执行过程避免了无用的评分计算。
 
-前一章我们介绍的布尔查询也支持`filter`短语，可以用来限制被其他短语匹配到，并且不改变原有的得分计算（**译者批注：说白了就是不影响评分**）。让我们用一个例子介绍下 [`range` query](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/query-dsl-range-query.html "Range Query")，可以让我们按照范围过滤。这个查询通常用在数值或日期类型的过滤。
+前一章我们介绍的布尔查询也支持 `filter` 短语，可以用来限制被其他短语匹配到，并且不改变原有的得分计算（**译者批注：说白了就是不影响评分**）。让我们用一个例子介绍下 [`range` query](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/query-dsl-range-query.html "Range Query")，可以让我们按照范围过滤。这个查询通常用在数值或日期类型的过滤。
 
 下面的例子使用布尔查询，过滤 余额 在2000-3000 闭区间内的所有文档，换句话说，我们要找到余额大于等于2000且小于等于3000的账户。
+
 ```json
 {
   "query": {
@@ -313,18 +321,19 @@ Elasticsearch 提供了基于JSON风格的特定查询语法，供你执行查�
 }
 ```
 
-分析上述例子，布尔查询包括一个`match_all`查询（查询部分）还有一个范围查询（过滤部分）。我们可以用其他任意查询替换查询和过滤部分。例子中范围查询命中的文档最有意义，没有其他方式命中的文档比它更相关
+分析上述例子，布尔查询包括一个 `match_all` 查询（查询部分）还有一个范围查询（过滤部分）。我们可以用其他任意查询替换查询和过滤部分。例子中范围查询命中的文档最有意义，没有其他方式命中的文档比它更相关
 （**译者批注：意思就是过滤命中的相关度是最高的，毕竟属于精准匹配**）
 
-除了`match_all`，`match`，`bool`，`range`几种查询方式，还有许多查询类型可用，在这里不一一深究，鉴于我们已经对查询有了基本的理解，所以将这些知识点运用到学习和实验其他类型的查询中应该不会太难。
+除了 `match_all`，`match`，`bool`，`range` 几种查询方式，还有许多查询类型可用，在这里不一一深究，鉴于我们已经对查询有了基本的理解，所以将这些知识点运用到学习和实验其他类型的查询中应该不会太难。
 
 ***
 
 # 执行聚合
 
-聚合提供能从数据中分组和提取统计的功能。最简单的理解方法就是认为他们和SQL中的 `GROUP BY` 和 SQL 中的聚合方法大致相同。在 Elasticsearch 中，你可以在执行一次搜索的结果中返回命中文档并同时在命中结果集外返回聚合结果。这个功能从某种意义上说十分有效，你可以通过简洁的 API 一次性返回查询结果和聚合结果，从而避免了多次网络IO。
+聚合提供能从数据中分组和提取统计的功能。最简单的理解方法就是认为他们和SQL中的 `GROUP BY` 和 SQL 中的聚合方法大致相同。在 Elasticsearch 中，你可以在执行一次搜索的结果中返回命中文档并同时在命中结果集外返回聚合结果。这个功能从某种意义上说十分有效，你可以通过简洁的 API 一次性返回查询结果和聚合结果，从而避免了多次网络 IO。
 
 我们以统计账户信息中各个州有多少账户开始，并按照州的字母顺序倒序排序（默认就是这样），返回10条聚合结果。
+
 ```json
 {
   "size": 0,
@@ -338,7 +347,7 @@ Elasticsearch 提供了基于JSON风格的特定查询语法，供你执行查�
 }
 ```
 
-SQL语句中和下面类似：
+SQL 语句中和下面类似：
 >SELECT state, COUNT(*) FROM bank GROUP BY state ORDER BY COUNT(*) DESC
 
 响应如下：
@@ -396,11 +405,12 @@ SQL语句中和下面类似：
 
 ```
 
-我们能看到，al州有21个账户，其次是tx有17个，其次是id有15个，等等。
+我们能看到，al州有21个账户，其次是 tx 有17个，其次是id有15个，等等。
 
-注意我们设置`size`为0，因为我们只想关注响应中的聚合结果。
+注意我们设置 `size` 为0，因为我们只想关注响应中的聚合结果。
 
 基于之前的聚合例子，下面的例子还计算了每个州账户的平均余额。
+
 ```json
 {
   "size": 0,
@@ -421,9 +431,10 @@ SQL语句中和下面类似：
 }
 ```
 
-注意我们是如何在`group_by_state`聚合体中嵌套`average_balance`聚合体的，这是一个公共的聚合模式，你可以嵌套任意聚合体改变聚合结果，从而实现你的需求。
+注意我们是如何在 `group_by_state` 聚合体中嵌套 `average_balance` 聚合体的，这是一个公共的聚合模式，你可以嵌套任意聚合体改变聚合结果，从而实现你的需求。
 
 基于上面的聚合例子，我们再根据平均余额进行倒序排序：
+
 ```json
 {
   "size": 0,
@@ -496,4 +507,4 @@ SQL语句中和下面类似：
 
 # 总结
 
-Elasticsearch 既简单又复杂，到目前为止我们已经基本了解了它是什么，他的一些内部机制，以及如何使用REST API来操作它。希望这个教程能够让你更好地理解 Elasticsearch，更重要的是，能够启发你去实验ES中更多地特性。
+Elasticsearch 既简单又复杂，到目前为止我们已经基本了解了它是什么，他的一些内部机制，以及如何使用 REST API 来操作它。希望这个教程能够让你更好地理解 Elasticsearch，更重要的是，能够启发你去实验 ES 中更多地特性。
