@@ -48,7 +48,7 @@ yellow open   bank  l7sSYV2cQXmu6_4rJWVIww   5   1       1000            0    12
 Rest API的搜索方式使用`_search`结尾的方式访问，下面的例子将返回银行索引下的全部文档：
 >curl 'localhost:9200/bank/_search?q=*&pretty'
 
-我们来进行第一次分析这个搜索请求。我们搜索（`_search结尾`）银行索引，并且参数 `q=*`告诉Elasticsearch匹配全部文档，之前出现过的这个`pretty`参数，仅仅是告诉Elasticsearch返回格式化过的JSON。
+我们来进行第一次分析这个搜索请求。我们搜索（`_search结尾`）银行索引，并且参数 `q=*` 告诉Elasticsearch匹配全部文档，之前出现过的这个 `pretty` 参数，仅仅是告诉 Elasticsearch 返回格式化过的JSON。
 响应如下：
 ```json
 {
@@ -78,7 +78,7 @@ Rest API的搜索方式使用`_search`结尾的方式访问，下面的例子将
 ```
 
 至于响应，我们看到以下部分：
-- `took` - Elasticsearch搜索花销的时间，毫秒单位
+- `took` - Elasticsearch 搜索花销的时间，毫秒单位
 - `timed_out ` - 请求是否超时
 - `_shards` - 告诉我们搜索了多少个分片，以及搜索成功/失败的分片个数
 - `hit` - 搜索结果（默认返回10条）
@@ -92,7 +92,7 @@ Rest API的搜索方式使用`_search`结尾的方式访问，下面的例子将
   "query": { "match_all": {} }
 }'
 
-不同的是，我们的`_search` API使用 POST 请求和 JSON 风格的请求体替代 URI中的`q=*`。
+不同的是，我们的 `_search` API使用 POST 请求和 JSON 风格的请求体替代 URI中的`q=*`。
 我们将会在下一章节讨论JSON风格的查询。
 
 响应如下：
@@ -124,13 +124,13 @@ Rest API的搜索方式使用`_search`结尾的方式访问，下面的例子将
       "_id" : "13",
 ```
 
-一定要明白，一旦你获得了搜索结果，这个请求在Elasticsearch中将完全执行完毕并且不会保存任何形式的服务端资源，并且你的搜索结果中也不会有游标等。这一点和其他使用SQL的存储引擎形成了鲜明的对比，在这些引擎中，可能你先获取查询结果的子集，然后如果你使用了带状态的服务端游标，需要接着返回服务器获取剩下结果。
+一定要明白，一旦你获得了搜索结果，这个请求在 Elasticsearch 中将完全执行完毕并且不会保存任何形式的服务端资源，并且你的搜索结果中也不会有游标等。这一点和其他使用SQL的存储引擎形成了鲜明的对比，在这些引擎中，可能你先获取查询结果的子集，然后如果你使用了带状态的服务端游标，需要接着返回服务器获取剩下结果。
 
 
 ***
 # 查询语句介绍
 
-Elasticsearch提供了基于JSON风格的特定查询语法，供你执行查询操作。在 [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/query-dsl.html "Query DSL")
+Elasticsearch 提供了基于JSON风格的特定查询语法，供你执行查询操作。在 [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/query-dsl.html "Query DSL")
 中有参考。查询语法十分详细可能第一次看会被吓到，不过最好的学习方法是从几个基本的例子开始：
 
 回到上一个例子，我们执行了如下查询：
@@ -140,18 +140,18 @@ Elasticsearch提供了基于JSON风格的特定查询语法，供你执行查询
 }
 ```
 
-分析上面的语句，`query`部分告诉我们查询定义了什么，`match_all`是我们想用的查询类型。`match_all`就是搜索指定索引下的全部文档。
+分析上面的语句，`query` 部分告诉我们查询定义了什么，`match_all` 是我们想用的查询类型。`match_all` 就是搜索指定索引下的全部文档。
 
-除了`query`参数我们还可以传递其他的参数影响搜索结果。例如下面的`match_all`查询只返回第一条文档：
+除了 `query` 参数我们还可以传递其他的参数影响搜索结果。例如下面的`match_all` 查询只返回第一条文档：
 >curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": { "match_all": {} },
   "size": 1
 }'
 
-注意`size`如果不指定，默认返回10条文档。
+注意 `size` 如果不指定，默认返回10条文档。
 
-下面的例子中，`match_all`查询返回第11到20条文档：
+下面的例子中，`match_all` 查询返回第11到20条文档：
 >curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": { "match_all": {} },
@@ -159,9 +159,9 @@ Elasticsearch提供了基于JSON风格的特定查询语法，供你执行查询
   "size": 10
 }'
 
-`from`（默认是0）参数从第几个文档开始，`size`参数用来指定从`from`参数指定的文档号开始返回几条文档。这个特性在实现分页搜索的时候很有用，注意`from`不指定的时候默认是0。
+`from`（默认是0）参数从第几个文档开始，`size` 参数用来指定从`from` 参数指定的文档号开始返回几条文档。这个特性在实现分页搜索的时候很有用，注意 `from` 不指定的时候默认是0。
 
-下面这个例子执行`match_all`查询，并且按照账户余额进行降序排序，并返回10（默认是大小）条文档。
+下面这个例子执行 `match_all` 查询，并且按照账户余额进行降序排序，并返回10（默认是大小）条文档。
 >curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": { "match_all": {} },
@@ -171,20 +171,20 @@ Elasticsearch提供了基于JSON风格的特定查询语法，供你执行查询
 ***
 
 # 执行搜索
-现在我们已经见过一些基本的搜索了，下面我们来发掘下更多的查询[DSL](http://blog.csdn.net/u010278882/article/details/50554299)。我们先来看一下搜索结果的字段，默认情况下所有查询都会返回完整的JSON文档，这个（完整的JSON文档）被称作 源（搜索命中结果的`_source`字段），如果我们不想返回整个文档，我们可以只从其中请求几个字段。
+现在我们已经见过一些基本的搜索了，下面我们来发掘下更多的查询[DSL](http://blog.csdn.net/u010278882/article/details/50554299)。我们先来看一下搜索结果的字段，默认情况下所有查询都会返回完整的JSON文档，这个（完整的 JSON 文档）被称作 源（搜索命中结果的 `_source` 字段），如果我们不想返回整个文档，我们可以只从其中请求几个字段。
 
-下面的例子告诉我们搜索结果如何只返回`account_number ` 和 `balance`两个字段。
+下面的例子告诉我们搜索结果如何只返回 `account_number` 和  `balance` 两个字段。
 >curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
 {
   "query": { "match_all": {} },
   "_source": ["account_number", "balance"]
 }'
 
-注意上面的例子我们只是减少了_source字段，返回结果仍然有`_source`但是里面只包含`account_number ` 和 `balance`两个字段。
+注意上面的例子我们只是减少了_source字段，返回结果仍然有 `_source` 但是里面只包含 `account_number` 和 `balance` 两个字段。
 
-如果你有使用SQL语句的背景，上面的例子有点类似SQL中的 `SELECT FROM`中的字段列表的概念。
+如果你有使用SQL语句的背景，上面的例子有点类似SQL中的 `SELECT FROM` 中的字段列表的概念。
 
-下面我们继续查询部分。之前我们已经知道如何使用`match_all`获取索引全部文档，那么现在来介绍一种新查询，叫[`match` query](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/query-dsl-match-query.html "Match Query")，可以说是最基本的基于字段的搜索（针对特定字段或字段集的搜索）。
+下面我们继续查询部分。之前我们已经知道如何使用 `match_all` 获取索引全部文档，那么现在来介绍一种新查询，叫[`match` query](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/query-dsl-match-query.html "Match Query")，可以说是最基本的基于字段的搜索（针对特定字段或字段集的搜索）。
 
 下面的例子返回账户号为20的文档：
 >curl -XPOST 'localhost:9200/bank/_search?pretty' -d '
@@ -214,7 +214,7 @@ Elasticsearch提供了基于JSON风格的特定查询语法，供你执行查询
 ```
 下面来介绍[`bool`(ean) query](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/query-dsl-bool-query.html "Bool Query")（**译者批注：布尔查询**）。布尔查询允许我们通过布尔逻辑将小的查询组合成大的查询。
 
-下面的例子组合了两个 `match` 查询，返回地址字段包含`mill` 和 `lane`的全部文档。
+下面的例子组合了两个 `match` 查询，返回地址字段包含 `mill` 和 `lane`的全部文档。
 ```json
 {
   "query": {
@@ -229,9 +229,9 @@ Elasticsearch提供了基于JSON风格的特定查询语法，供你执行查询
 ```
 
 
-上面的例子中，`bool must`部分指定了所有查询条件都必须返回true，文档才算命中。
+上面的例子中，`bool must` 部分指定了所有查询条件都必须返回true，文档才算命中。
 
-相反的，下面的例子组合了两个`match` 查询，返回地址中包含`mill` 或 `lane`的全部文档。
+相反的，下面的例子组合了两个 `match` 查询，返回地址中包含 `mill` 或 `lane` 的全部文档。
 ```json
 {
   "query": {
@@ -245,9 +245,9 @@ Elasticsearch提供了基于JSON风格的特定查询语法，供你执行查询
 }
 ```
 
-上面的例子，`bool should`部分指定了一组查询任意一个条件是true才能命中文档。
+上面的例子，`bool should` 部分指定了一组查询任意一个条件是true才能命中文档。
 
-下面的例子组合了两个`match`查询，返回文档的地址字段中既不包括`mill` 也不包括`lane`。
+下面的例子组合了两个 `match` 查询，返回文档的地址字段中既不包括`mill` 也不包括 `lane`。
 
 ```json
 {
@@ -322,7 +322,7 @@ Elasticsearch提供了基于JSON风格的特定查询语法，供你执行查询
 
 # 执行聚合
 
-聚合提供能从数据中分组和提取统计的功能。最简单的理解方法就是认为他们和SQL中的 `GROUP BY`和SQL中的聚合方法大致相同。在Elasticsearch中，你可以在执行一次搜索的结果中返回命中文档并同时在命中结果集外返回聚合结果。这个功能从某种意义上说十分有效，你可以通过简洁的API一次性返回查询结果和聚合结果，从而避免了多次网络IO。
+聚合提供能从数据中分组和提取统计的功能。最简单的理解方法就是认为他们和SQL中的 `GROUP BY` 和 SQL 中的聚合方法大致相同。在 Elasticsearch 中，你可以在执行一次搜索的结果中返回命中文档并同时在命中结果集外返回聚合结果。这个功能从某种意义上说十分有效，你可以通过简洁的 API 一次性返回查询结果和聚合结果，从而避免了多次网络IO。
 
 我们以统计账户信息中各个州有多少账户开始，并按照州的字母顺序倒序排序（默认就是这样），返回10条聚合结果。
 ```json
@@ -342,6 +342,7 @@ SQL语句中和下面类似：
 >SELECT state, COUNT(*) FROM bank GROUP BY state ORDER BY COUNT(*) DESC
 
 响应如下：
+
 ```json
 {
   "took" : 26,
@@ -495,8 +496,4 @@ SQL语句中和下面类似：
 
 # 总结
 
-Elasticsearch既简单又复杂，到目前为止我们已经基本了解了它是什么，他的一些内部机制，以及如何使用REST API来操作它。希望这个教程能够让你更好地理解Elasticsearch，更重要的是，能够启发你去实验ES中更多地特性。
-
-上一节：[Elasticsearch官档翻译——1.4 修改数据](https://www.jianshu.com/p/4124e60b1244)
-
-下一节：[Elasticsearch官档翻译——2 设置](https://www.jianshu.com/p/9dd09a5d7c03)
+Elasticsearch 既简单又复杂，到目前为止我们已经基本了解了它是什么，他的一些内部机制，以及如何使用REST API来操作它。希望这个教程能够让你更好地理解 Elasticsearch，更重要的是，能够启发你去实验ES中更多地特性。

@@ -7,4 +7,4 @@
  * [修改数据](xiu-gai-shu-ju.md)
  * [探索数据](tan-suo-shu-ju.md)
 * [设置](she-zhi.md)
- * [] 
+ * [配置](pei-zhi.md) 

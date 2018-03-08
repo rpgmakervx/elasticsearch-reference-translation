@@ -21,10 +21,10 @@
 >epoch           timestamp   cluster          status  node.total node.data shards pri relo init unassign
 1394735289   14:28:09    elasticsearch  green               1           1        0        0         0        0            0
 
-可以看出我们的集群`elasticsearch`状态是`green`。
+可以看出我们的集群 `elasticsearch` 状态是`green`。
 每当我们请求集群健康状态时，我们会得到`green`,`yellow`或`red`。绿色表示一切OK（此时集群功能齐全），黄色表示集群的数据齐全，但是有些副本还没有分配（**译者批注：或者说副本丢失**）(此时集群功能齐全)，红色表示无论出于什么原因，部分数据丢失。注意即使集群处于红色状态，他仍旧是部分可用的（搜索请求在可用的分片上仍旧有效），但是你还是需要尽快修复它，毕竟数据不全了。
 
-我们也能从相应中看出，我们有一个节点，由于没有数据我们的分片数是0。注意，因为我们使用默认的集群名`elasticsearch`，并且因为Elasticsearch默认使用单播的节点发现方式发现同台机器上的其他节点，有可能你会无意中启动了多个节点而把他们加入到集群中，这样你可能会在相应中看到不止一个节点。
+我们也能从相应中看出，我们有一个节点，由于没有数据我们的分片数是0。注意，因为我们使用默认的集群名 `elasticsearch`，并且因为Elasticsearch默认使用单播的节点发现方式发现同台机器上的其他节点，有可能你会无意中启动了多个节点而把他们加入到集群中，这样你可能会在相应中看到不止一个节点。
 我们可以通过如下命令得到节点列表：
 >curl 'localhost:9200/_cat/nodes?v'
 
@@ -46,7 +46,7 @@ mwubuntu1    127.0.1.1            8           4 0.00 d         *      New Goblin
 
 
 #### 创建索引
-现在我们创建一个名为`customer `的索引，然后再看下索引列表：
+现在我们创建一个名为 `customer` 的索引，然后再看下索引列表：
 >curl -XPUT 'localhost:9200/customer?pretty'
 curl 'localhost:9200/_cat/indices?v'
 
@@ -60,13 +60,13 @@ curl 'localhost:9200/_cat/indices?v'
 health index    pri rep docs.count docs.deleted store.size pri.store.size
 yellow customer   5   1          0            0       495b           495b
 
-第二条命令我们知道我们有一个customer索引，它包含5个主分片和1个副本（默认配置），并且索引不包含文档。
+第二条命令我们知道我们有一个 customer 索引，它包含5个主分片和1个副本（默认配置），并且索引不包含文档。
 
 可能你也注意到了，集群状态现在被标注了黄色，之前讨论过黄色表示存在副本未分配，该现象的原因是ES默认为这个索引创建一个副本，由于我们集群只有一个节点，为保证高可用，副本无法进行分配，直到有新的节点加入集群才行。一旦副本能够分配到第二个节点上，节点的健康状态就会切换成绿色。
 
 #### 索引并查询文档
-现在我们写点数据到我们的customer索引中，记得我们之前说过，文档插入索引需要指定索引的类型。
-现在插入一个简单的文档，类型叫`external `,ID为1，json文档为：{ "name": "John Doe" }，命令如下：
+现在我们写点数据到我们的 customer 索引中，记得我们之前说过，文档插入索引需要指定索引的类型。
+现在插入一个简单的文档，类型叫 `external `,ID为1，json文档为：{ "name": "John Doe" }，命令如下：
 >curl -XPUT 'localhost:9200/customer/external/1?pretty' -d '
 {
   "name": "John Doe"
@@ -81,9 +81,9 @@ yellow customer   5   1          0            0       495b           495b
   "created" : true
 }
 
-上面可以看出我们在customer索引的external类型中创建了一个文档，文档有一个内部id，在索引期间指定的。
+上面可以看出我们在 customer 索引的 external 类型中创建了一个文档，文档有一个内部 id，在索引期间指定的。
 
-有个关键点需要注意，在你创建文档到某个索引的时候，ES并不强求你显示的先创建索引，如果customer索引不存在，ES会自动创建。
+有个关键点需要注意，在你创建文档到某个索引的时候，ES并不强求你显示的先创建索引，如果 customer 索引不存在，ES会自动创建。
 
 下面我们取回刚才创建的文档：
 >curl -XGET 'localhost:9200/customer/external/1?pretty'
@@ -98,7 +98,7 @@ yellow customer   5   1          0            0       495b           495b
   "found" : true, "_source" : { "name": "John Doe" }
 }
 ```
-除了一个`found`字段，它表示我们得到了一个id为1的文档，以及另一个字段`_source`，它包含了我们上一步索引的文档完整内容之外，其他没有什么特别的。
+除了一个 `found` 字段，它表示我们得到了一个id为1的文档，以及另一个字段 `_source` ，它包含了我们上一步索引的文档完整内容之外，其他没有什么特别的。
 
 #### 删除索引
 现在我们删除刚才创建的索引，并再次列出全部索引
@@ -127,7 +127,7 @@ curl -XDELETE 'localhost:9200/customer'
 如果仔细分析下以上的命令，我们可以发现访问ES中数据的一个模式。这个模式可以被总结为：
 >curl -X <REST Verb> <Node>:<Port>/<Index>/<Type>/<ID>
 
-这个REST命令普适于ES中全部API命令，记住这个会为你学习ES开个好头。
+这个REST命令普适于 ES 中全部 API 命令，记住这个会为你学习 ES 开个好头。
 
 
 
