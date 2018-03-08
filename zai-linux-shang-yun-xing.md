@@ -1,9 +1,9 @@
 >* 文章名称：Elasticsearch Reference[2.2]
->* 原文地址：https://www.elastic.co/guide/en/elasticsearch/reference/2.2/setup-service.html
+>* 原文地址：[https://www.elastic.co/guide/en/elasticsearch/reference/2.2/setup-service.html](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/setup-service.html)
 >* 译者：[code4j](https://github.com/rpgmakervx)
 
 # 在Linux上启动服务
-为了在 Linux 上启动ES服务，官方提供的包尽可能让你在升级或重启集群的时候轻松地启停集群。
+为了在 Linux 上启动 ES 服务，官方提供的包尽可能让你在升级或重启集群的时候轻松地启停集群。
 目前我们有构建 debian 和 rpm 两种安装包，都可以在下载页获取。包本身没有依赖，但是你必须确认你安装了 JDK。
 每个包都有个配置文件，它允许你设置如下配置参数：
 
@@ -52,12 +52,12 @@ sudo service elasticsearch start
 
 #### 使用systemd
 
-有些发行版类似Debian Jeessie（**译者批注：Jessie系列就是Debian 8**），Ubuntu 14还有一些SUSE的衍生版本不使用`chkconfig`注册服务，而是使用 `systemd`，命令是`/bin/systemctl`,，来启停服务（至少是新版本，否则使用`chkconfig`）。基于RPM安装的配置文件也是放在`/etc/sysconfig/elasticsearch`下，如果是deb包的话在`/etc/default/elasticsearch`中。安装好RPM包后，你需要修改 systemd 的配置并启动 elasticsearch。
+有些发行版类似Debian Jeessie（**译者批注：Jessie系列就是Debian 8**），Ubuntu 14 还有一些SUSE的衍生版本不使用`chkconfig` 注册服务，而是使用 `systemd`，命令是 `/bin/systemctl` ,，来启停服务（至少是新版本，否则使用`chkconfig`）。基于 RPM 安装的配置文件也是放在 `/etc/sysconfig/elasticsearch` 下，如果是 deb 包的话在 `/etc/default/elasticsearch` 中。安装好RPM包后，你需要修改 systemd 的配置并启动 elasticsearch。
 >sudo /bin/systemctl daemon-reload
 sudo /bin/systemctl enable elasticsearch.service
 sudo /bin/systemctl start elasticsearch.service
 
-注意在 `/etc/sysconfig/elasticsearch` 中修改MAX_MAP_COUNT并不起作用，你需要在`/usr/lib/sysctl.d/elasticsearch.conf`配置文件中修改，确保启动生效。
+注意在 `/etc/sysconfig/elasticsearch` 中修改MAX_MAP_COUNT并不起作用，你需要在 `/usr/lib/sysctl.d/elasticsearch.conf` 配置文件中修改，确保启动生效。
 
 
 

@@ -8,3 +8,7 @@ Elasticsearch参考手册翻译，原文地址：https://www.elastic.co/guide/en
  * [修改数据](xiu-gai-shu-ju.md)
  * [探索数据](tan-suo-shu-ju.md)
 * [设置](she-zhi.md)
+ * [配置](pei-zhi.md) 
+ * [在Linux上启动服务](zai-linux-shang-yun-xing.md)
+ * [目录结构](mu-lu-jie-gou.md)
+ * [升级](sheng-ji.md)
