@@ -14,12 +14,12 @@
 
 #### 集群健康
 我们先进行一个基本的健康检查，看下集群如何运作。我们将使用 `curl` 命令工具，但你也可以使用任何能够发起 http/rest 协议请求的工具（**译者批注：Windows 用户也要先安装 curl 工具，或者使用一些浏览器插件，例如火狐的 HttpRequester，或者 chrome 的 sense，我个人推荐 sense，这个是专门为ES定制的**）。假设我们在刚才启动的 ES 节点，我们打开一个新的控制台。
-检查集群健康要使用 [`_cat` API](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/cat.html "cat APIs")，记得之前我们节点的端口是`9200``:
+检查集群健康要使用 [`_cat` API](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/cat.html "cat APIs")，记得之前我们节点的端口是`9200`:
 >curl 'localhost:9200/_cat/health?v'
 
 响应内容如下：
 >epoch           timestamp   cluster          status  node.total node.data shards pri relo init unassign
-1394735289   14:28:09    elasticsearch  green               1           1        0        0         0        0            0
+>1394735289   14:28:09    elasticsearch  green               1           1        0        0         0        0            0
 
 可以看出我们的集群 `elasticsearch` 状态是 `green`。
 每当我们请求集群健康状态时，我们会得到 `green` , `yellow` 或 `red` 。绿色表示一切 OK （此时集群功能齐全），黄色表示集群的数据齐全，但是有些副本还没有分配（**译者批注：或者说副本丢失**）(此时集群功能齐全)，红色表示无论出于什么原因，部分数据丢失。注意即使集群处于红色状态，他仍旧是部分可用的（搜索请求在可用的分片上仍旧有效），但是你还是需要尽快修复它，毕竟数据不全了。
@@ -63,13 +63,14 @@ curl 'localhost:9200/_cat/indices?v'
 ```
 
 > health index    pri rep docs.count docs.deleted store.size pri.store.size
-yellow customer   5   1          0            0       495b           495b
+>yellow customer   5   1          0            0       495b           495b
 
 第二条命令我们知道我们有一个 customer 索引，它包含5个主分片和1个副本（默认配置），并且索引不包含文档。
 
 可能你也注意到了，集群状态现在被标注了黄色，之前讨论过黄色表示存在副本未分配，该现象的原因是 ES 默认为这个索引创建一个副本，由于我们集群只有一个节点，为保证高可用，副本无法进行分配，直到有新的节点加入集群才行。一旦副本能够分配到第二个节点上，节点的健康状态就会切换成绿色。
 
 #### 索引并查询文档
+
 现在我们写点数据到我们的 customer 索引中，记得我们之前说过，文档插入索引需要指定索引的类型。
 现在插入一个简单的文档，类型叫 `external`,ID为1，json 文档为：{ "name": "John Doe" }，命令如下：
 >curl -XPUT 'localhost:9200/customer/external/1?pretty' -d '
@@ -78,13 +79,16 @@ yellow customer   5   1          0            0       495b           495b
 }'
 
 响应如下：
->{
+
+```json
+{
   "_index" : "customer",
   "_type" : "external",
   "_id" : "1",
   "_version" : 1,
   "created" : true
 }
+```
 
 上面可以看出我们在 customer 索引的 external 类型中创建了一个文档，文档有一个内部 id，在索引期间指定的。
 
