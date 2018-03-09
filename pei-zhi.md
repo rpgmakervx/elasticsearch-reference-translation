@@ -6,23 +6,23 @@
 # 配置
 
 # 环境变量
-Elasticsearch会使用脚本中内置的 `JAVA_OPTS` 变量值作为JVM启动参数，最重要参数 `-Xmx`，它控制进程最大的堆内存，`-Xms`，控制进程分配最小堆内存（通常来说内存分配越多越好）。
-通常来说，推荐做法是不改变`JAVA_OPTS`变量，而使用`ES_JAVA_OPTS`来改变JVM参数配置。
-`ES_HEAP_SIZE `参数用来配置Java为ES进程分配的堆内存，最大最小值是一样的，当然也可以通过指定的参数分别设置，最小最大分别是 `ES_MIN_MEM`（默认256M）和`ES_MAX_MEM `（默认是1G）。
+Elasticsearch 会使用脚本中内置的 `JAVA_OPTS` 变量值作为JVM启动参数，最重要参数 `-Xmx`，它控制进程最大的堆内存，`-Xms`，控制进程分配最小堆内存（通常来说内存分配越多越好）。
+通常来说，推荐做法是不改变 `JAVA_OPTS` 变量，而使用 `ES_JAVA_OPTS` 来改变 JVM 参数配置。
+`ES_HEAP_SIZE `参数用来配置Java为ES进程分配的堆内存，最大最小值是一样的，当然也可以通过指定的参数分别设置，最小最大分别是 `ES_MIN_MEM`（默认256M）和 `ES_MAX_MEM` （默认是1G）。
 （**译者批注：通常建议最大最小内存设置成一样的，因为通常 ES 集群所在服务器资源尽可能都是提供给集群使用的，所以资源管够，而设置不同的最大最小值，会产生内存扩容导致过多开销**）
 建议将最大值最小值设置一样，并且打开（mlockall）
-（**译者批注：`mlockall` 这个参数可以防止进程进行swap内存交换，内存交换效率很低，毕竟要读写磁盘。详细原因可以看这里：[把bootstrap.mlockall设为true](http://zhaoyanblog.com/archives/826.html)**）
+（**译者批注： `mlockall` 这个参数可以防止进程进行swap内存交换，内存交换效率很低，毕竟要读写磁盘。详细原因可以看这里：[把 bootstrap.mlockall 设为 true ](http://zhaoyanblog.com/archives/826.html)**）
 
 ### 系统配置
 **文件描述符**
 确保增大你机器（或者运行 ES 的用户）的最大文件打开数，推荐设置为32K或64K。
 为了测试一个进程的最大文件打开数，启动时配置参数 `-Des.max-open-files` 为 `true`。这样系统启动时就会打印最大文件打开数。
-另外，你也可以通过解析下面API的结果中的 `max_file_descriptors ` 参数获取每个节点的最大文件打开数：
+另外，你也可以通过解析下面 API 的结果中的 `max_file_descriptors` 参数获取每个节点的最大文件打开数：
 > curl localhost:9200/_nodes/stats/process?pretty
 
 
 **虚拟内存**
-Elasticsearch默认使用 `mmaps / niofs` 混合的目录存储类型存储索引。默认的操作系统限制 `mmaps`（内存映射模式）中的虚拟地址空间限制太小了，可能会导致内存溢出，在Linux上，你可以使用 `root` 用户通过如下命令扩大限制：
+Elasticsearch 认使用 `mmaps / niofs` 混合的目录存储类型存储索引。默认的操作系统限制 `mmaps`（内存映射模式）中的虚拟地址空间限制太小了，可能会导致内存溢出，在 inux ，你可以使用 `root` 用户通过如下命令扩大限制：
 >sysctl -w vm.max_map_count=262144
 
 如果想要永久改变这个参数的花，修改配置文件 `/etc/sysctl.conf` 中的 `vm.max_map_count` 这项配置。
@@ -31,7 +31,7 @@ Elasticsearch默认使用 `mmaps / niofs` 混合的目录存储类型存储索�
 **内存配置**
 大多数操作系统会尽可能多的使用内存给文件系统缓存并迫切的交换（后称 `swap` ）无用的应用内存到磁盘，这有可能导致 Elasticsearch 进程被 swap 到磁盘，swap 十分消耗性能并且影响节点的稳定性，因此要不惜一切代价避免它发生。
 你有三种选择：
-- **禁用swap**
+- **禁用 swap**
 简单粗暴的禁用 swap，通常 Elasticsearch 作为一个服务运行在沙箱环境中，其内存通过系统变量 `ES_HEAP_SIZE` 来控制，因此swap不应该启用。
 Linux系统中，你可以通过命令 `sudo swapoff -a` 来关闭，如果想永久关闭，需要修改配置文件 `/etc/fstab` 并找到注释中包括 `swap` 的那行。
 Windows 下，你可以完全禁用分页文件，设置方法：我的电脑右键属性->高级系统设置->高级/性能，点击设置->高级->虚拟内存，点击更改->选择无分页文件。
@@ -53,7 +53,7 @@ Windows 下，你可以完全禁用分页文件，设置方法：我的电脑右
 
 >注意：启用 mlockall ，如果尝试申请超过可用内存大小的内存，可能会导致 JVM 或 shell 回话退出。
 
-# Elasticsearch配置
+# Elasticsearch 配置
 elasticsearch 的配置文件在 `ES_HOME/config` 目录下，目录中有两个文件，`elasticsearch.yml` 用来配置ES的不同模块， `logging.yml` 用来配置ES日志相关设置。
 配置风格是[YAML](http://www.yaml.org/)，下面我们来一个示例，修改所有网络模块绑定的地址信息，改为如下：
 >network.host: 10.0.0.4
@@ -77,12 +77,12 @@ path.logs: /var/log/elasticsearch
 
 #### 节点名
 
-也许你也需要修改节点名称，就像主机名一样。默认情况下节点启动时会从3000个漫威人物名字中随机选取一个。
+也许你也需要修改节点名称，就像主机名一样。默认情况下节点启动时会从 3000 个漫威人物名字中随机选取一个。
 >node.name: <NAME OF YOUR NODE>
 
 （**译者批注：推荐命名用编号区分方便管理维护**）
 
-机器的主机名可以通过系统变量 `HOSTNAME`获取，如果你的机器只运行集群中的一个节点，可以设置节点名为主机名，使用标签 `${...}`。
+机器的主机名可以通过系统变量 `HOSTNAME` 获取，如果你的机器只运行集群中的一个节点，可以设置节点名为主机名，使用标签 `${...}`。
 > node.name: ${HOSTNAME}
 
 （**译者批注：这种配置方式极不推荐，不利于管理，风险高，把它当做一个 trick 测试玩好了。除非你做了一些安全或权限的插件，用到输入密码这种配置。**）
