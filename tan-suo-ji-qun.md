@@ -13,7 +13,7 @@
 （**译者批注：为了搜索性能，译者不推荐一些高阶操作例如脚本，把逻辑运算放到引擎中，有点类似关系型数据库的存储过程或者函数，效率并不高，而且使用场景可以通过业务进行优化。**）
 
 #### 集群健康
-我们先进行一个基本的健康检查，看下集群如何运作。我们将使用`curl`命令工具，但你也可以使用任何能够发起 http/rest 协议请求的工具（**译者批注：Windows 用户也要先安装curl工具，或者使用一些浏览器插件，例如火狐的 HttpRequester，或者 chrome 的 sense，我个人推荐 sense，这个是专门为ES定制的**）。假设我们在刚才启动的 ES 节点，我们打开一个新的控制台。
+我们先进行一个基本的健康检查，看下集群如何运作。我们将使用 `curl` 命令工具，但你也可以使用任何能够发起 http/rest 协议请求的工具（**译者批注：Windows 用户也要先安装 curl 工具，或者使用一些浏览器插件，例如火狐的 HttpRequester，或者 chrome 的 sense，我个人推荐 sense，这个是专门为ES定制的**）。假设我们在刚才启动的 ES 节点，我们打开一个新的控制台。
 检查集群健康要使用 [`_cat` API](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/cat.html "cat APIs")，记得之前我们节点的端口是`9200``:
 >curl 'localhost:9200/_cat/health?v'
 
@@ -26,9 +26,11 @@
 
 我们也能从相应中看出，我们有一个节点，由于没有数据我们的分片数是0。注意，因为我们使用默认的集群名 `elasticsearch`，并且因为 Elasticsearch 默认使用单播的节点发现方式发现同台机器上的其他节点，有可能你会无意中启动了多个节点而把他们加入到集群中，这样你可能会在相应中看到不止一个节点。
 我们可以通过如下命令得到节点列表：
+
 >curl 'localhost:9200/_cat/nodes?v'
 
 响应如下：
+
 >host         ip        heap.percent ram.percent load node.role master name
 mwubuntu1    127.0.1.1            8           4 0.00 d         *      New Goblin
 
@@ -46,17 +48,20 @@ mwubuntu1    127.0.1.1            8           4 0.00 d         *      New Goblin
 
 
 #### 创建索引
+
 现在我们创建一个名为 `customer` 的索引，然后再看下索引列表：
 >curl -XPUT 'localhost:9200/customer?pretty'
 curl 'localhost:9200/_cat/indices?v'
 
 第一条命令使用 PUT 请求创建一个 "customer" 索引，后面加上 `pretty` 参数是为了让响应的 json 格式化输出。
 响应分别如下:
+
 ```json 
 {
   "acknowledged" : true
 }
 ```
+
 > health index    pri rep docs.count docs.deleted store.size pri.store.size
 yellow customer   5   1          0            0       495b           495b
 
@@ -89,6 +94,7 @@ yellow customer   5   1          0            0       495b           495b
 >curl -XGET 'localhost:9200/customer/external/1?pretty'
 
 响应如下：
+
 ```json
 {
   "_index" : "customer",
@@ -98,19 +104,23 @@ yellow customer   5   1          0            0       495b           495b
   "found" : true, "_source" : { "name": "John Doe" }
 }
 ```
+
 除了一个 `found` 字段，它表示我们得到了一个id为1的文档，以及另一个字段 `_source` ，它包含了我们上一步索引的文档完整内容之外，其他没有什么特别的。
 
 #### 删除索引
+
 现在我们删除刚才创建的索引，并再次列出全部索引
 >curl -XDELETE 'localhost:9200/customer?pretty'
 curl 'localhost:9200/_cat/indices?v'
 
 响应分别如下：
+
 ```json
 {
   "acknowledged" : true
 }
 ```
+
 >health index pri rep docs.count docs.deleted store.size pri.store.size
 
 表明我们成功删除了一个索引，现在集群恢复到了刚才启动时候的状态。
