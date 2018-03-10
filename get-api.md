@@ -73,7 +73,7 @@ Get 操作可以通过参数 `fileds` 指定返回一组设置存储(`store`)的
 
 ## 生成字段
 
-如果在索引后没有执行刷新请求，那么 Get 操作将会走 transaction log（**译者批注：类似 mysql 的 redolog，后面的文章会做介绍**） 获取文档，当然，有些字段是在索引期生成的，如果你试图访问这种字段，可能会报异常。你可以通过 配置 `ignore_errors_on_generated_fields` 参数忽略它们。
+如果在索引后没有执行刷新请求，那么 Get 操作将会走 transaction log（**译者批注：类似 mysql 的 redolog，后面的文章会做介绍**） 获取文档，当然，有些字段是在索引期生成的，如果你试图访问这种字段，可能会报异常。你可以通过 配置`ignore_errors_on_generated_fields` 参数忽略它们。
 
 
 

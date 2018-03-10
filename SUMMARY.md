@@ -18,3 +18,4 @@
  * [4.3 通用选项](tong-yong-xuan-xiang.md)
 * [5 文档API](wen-dang-api.md)
  * [5.1 Index API](index-api.md)
+ * [5.2 Get API](get-api.md)
