@@ -4,13 +4,13 @@ Elasticsearch参考手册翻译，原文地址：[https://www.elastic.co/guide/e
 
 #### 译者：
 
-* \[code4j\]\(https://github.com/rpgmakervx\)
+* \[code4j\]\([https://github.com/rpgmakervx\](https://github.com/rpgmakervx\)\)
 
 #### 项目地址： {#项目地址：}
 
-https://github.com/rpgmakervx/elasticsearch-reference-translation
+[https://github.com/rpgmakervx/elasticsearch-reference-translation](https://github.com/rpgmakervx/elasticsearch-reference-translation)
 
-
+若有翻译欠妥或有误之处，欢迎提issue指正！
 
 * [介绍](jie-shao.md)
   * [基本概念](ji-ben-gai-nian.md)
