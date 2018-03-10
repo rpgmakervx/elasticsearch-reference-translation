@@ -1,6 +1,15 @@
 # elasticsearch-reference-translation
 Elasticsearch参考手册翻译，原文地址：https://www.elastic.co/guide/en/elasticsearch/reference/2.2/getting-started.html
 
+#### 译者：
+[code4j](https://github.com/rpgmakervx\)
+
+#### 项目地址：
+[https://github.com/rpgmakervx/elasticsearch-reference-translation](https://github.com/rpgmakervx/elasticsearch-reference-translation)
+
+**若有翻译欠妥或有误之处，欢迎提issue指正！**
+
+## 目录
 
 * [1 介绍](jie-shao.md)
  * [1.1 基本概念](ji-ben-gai-nian.md)
