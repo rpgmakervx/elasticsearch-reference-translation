@@ -17,4 +17,4 @@
  * [4.2 索引名日期格式支持](suo-yin-ming-ri-qi-ge-shi-zhi-chi.md)
  * [4.3 通用选项](tong-yong-xuan-xiang.md)
 * [5 文档API](wen-dang-api.md)
- * [5.1 # Index API](index-api.md)
+ * [5.1 Index API](index-api.md)
