@@ -11,3 +11,4 @@
  * [在Linux上启动服务](zai-linux-shang-yun-xing.md)
  * [目录结构](mu-lu-jie-gou.md)
  * [升级](sheng-ji.md)
+ * [突出的变化](tu-chu-bian-hua.md)
