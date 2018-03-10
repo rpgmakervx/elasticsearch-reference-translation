@@ -1,9 +1,16 @@
 # elasticsearch-reference-translation
+
+***
+
+[![掘金翻译计划](https://rawgit.com/aleen42/badges/master/src/juejin_translation.svg)](https://github.com/xitu/gold-miner/)
+
+![cover-img](https://www.elastic.co/assets/blt6050efb80ceabd47/elastic-logo%20(2).svg)
+
 Elasticsearch参考手册翻译，原文地址：[https://www.elastic.co/guide/en/elasticsearch/reference/2.2/getting-started.html](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/getting-started.html)
 
-#### 译者：[code4j](https://github.com/rpgmakervx)
+译者：[code4j](https://github.com/rpgmakervx)
 
-#### 项目地址：
+项目地址：
 [https://github.com/rpgmakervx/elasticsearch-reference-translation](https://github.com/rpgmakervx/elasticsearch-reference-translation)
 
 **Note**:
