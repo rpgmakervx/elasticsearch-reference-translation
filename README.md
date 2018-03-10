@@ -4,7 +4,7 @@
 
 [![掘金翻译计划](https://rawgit.com/aleen42/badges/master/src/juejin_translation.svg)](https://github.com/xitu/gold-miner/)
 
-![cover-img](https://www.elastic.co/assets/blt6050efb80ceabd47/elastic-logo%20(2).svg)
+![cover-img](https://www.elastic.co/assets/blt6050efb80ceabd47/elastic-logo%20(2\).svg)
 
 Elasticsearch参考手册翻译，原文地址：[https://www.elastic.co/guide/en/elasticsearch/reference/2.2/getting-started.html](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/getting-started.html)
 
