@@ -73,8 +73,55 @@ Get 操作可以通过参数 `fileds` 指定返回一组设置存储(`store`)的
 
 ## 生成字段
 
-如果在索引后没有执行刷新请求，那么 Get 操作将会走 transaction log（**译者批注：类似 mysql 的 redolog，后面的文章会做介绍**） 获取文档，当然，有些字段是在索引期生成的，如果你试图访问这种字段，可能会报异常。你可以通过 配置`ignore_errors_on_generated_fields` 参数忽略它们。
+如果在索引后没有执行刷新请求，那么 Get 操作将会走 transaction log（**译者批注：类似 mysql 的 redolog，后面的文章会做介绍**） 获取文档，当然，有些字段是在索引期生成的，如果你试图访问这种字段，可能会报异常。你可以通过 配置 `ignore_errors_on_generated_fields` 参数忽略它们。
 
+## 直接获取 _source
+
+使用 `/{index}/{type}/{id}/_source` 来获取文档中的 source，不包含其他的元数据信息，例如：
+
+> curl -XGET 'http://localhost:9200/twitter/tweet/1/_source'
+
+你也可以通过 source 过滤 控制返回你需要的 source 的部分：
+
+> curl -XGET 'http://localhost:9200/twitter/tweet/1/_source?_source_include=*.id&_source_exclude=entities'
+
+注意，`_source` 方式也可以通过使用 HTTP 的 HEAD 请求方法判断文档是否存在，例如：
+
+> curl -XHEAD -i 'http://localhost:9200/twitter/tweet/1/_source'
+
+## 路由
+
+当索引文档的时候使用了路由，获取文档的时候也必须要提供路由值，例如：
+
+> curl -XGET 'http://localhost:9200/twitter/tweet/1?routing=kimchy'
+
+上面的例子将能获取到文档id为1的tweet，但是会根据用户名路由。注意，如果没有提供正确的路由信息，就无法获取到文档
+（**译者批注：默认路由值是 ID ，路由值是 ID 的时候，GET 不加路由也没能获取到；如果分片只有一个的情况下 GET 也可以不提供路由，因为无论怎么算都只能路由到这一个分片**）
+
+## 偏好
+
+通过控制 `preference` 参数控制 get 请求去哪个分片上执行。默认情况下请求随机选择分片执行。
+`preference` 可选的参数有：
+
+- `primary` - 请求只在主分片执行。
+- `_local` - 操作会优先在本地节点有的分片中查询，没有的话再在其它节点查询.
+
+- *自定义值（字符串）* - 使用自定义的值来保证同一个值的数据，在同一个 shard 里面。一般可以使用网站的session id或者用户名
+（**译者批注：自定义值有点类似路由，搜索 API 也能用**）
+
+## 刷新
+
+可以在 get 操作设置 `refresh` 参数为 `true` 刷新相关的分片，以确保文档能够搜索到。设置这个参数为 `true` 需要注意验证是否会导致系统负载过高（以及降低索引速度）。
+（**译者批注：refresh 会带来额外的 IO 开销**）
+
+## 分布式
+get 操作会计算一个哈希值指定一个分片 id ，然后 get 请求会被重定向到其中一个等于上述 id 分片集合上。分片集合指的是包括这个 id 的主分片和副本，也就是说我们的分片越多，GET  请求的水平扩展力越好。
+
+## 版本支持
+
+你可以使用 `version` 参数指定获取文档，前提是当前文档版本等于你参数的版本。除了  `FORCE` 类型的版本控制类型对于所有的类型都是相同的。
+
+在 elasticsearch 内部，它标记了旧文档删除并增加了一个新文档，旧版本的文档不会立马消失，当然你也无法访问到，随着你索引更多地数据，elasticsearch 在底层会清理标记删除的文档。
 
 
 
