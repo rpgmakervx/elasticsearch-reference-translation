@@ -1,5 +1,5 @@
 >* 文章名称：Elasticsearch Reference[2.2]
->* 原文地址：[https://www.elastic.co/guide/en/elasticsearch/reference/2.2/api-conventions.html](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/api-conventions.html)
+>* 原文地址：[https://www.elastic.co/guide/en/elasticsearch/reference/2.2/date-math-index-names.html](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/date-math-index-names.html)
 >* 译者：[code4j](https://github.com/rpgmakervx)
 
 # 索引名日期格式支持
