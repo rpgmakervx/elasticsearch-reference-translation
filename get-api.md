@@ -6,7 +6,9 @@
 
 get api 支持通过 ID 返回一个 JSON 格式的文档。下面的例子是从 twitter 索引下的 tweet type 中获取 ID 为1的文档：
 
-> curl -XGET 'http://localhost:9200/twitter/tweet/1'
+```
+curl -XGET 'http://localhost:9200/twitter/tweet/1'
+```
 
 返回结果如下：
 
@@ -29,7 +31,9 @@ get api 支持通过 ID 返回一个 JSON 格式的文档。下面的例子是�
 
 这个 API 还能使用 HTTP 的 `HEAD` 请求,例如：
 
-> curl -XHEAD -i 'http://localhost:9200/twitter/tweet/1'
+```
+curl -XHEAD -i 'http://localhost:9200/twitter/tweet/1'
+```
 
 ## 实时性
 
@@ -48,21 +52,29 @@ Get API 允许使用 `_type` 字段，如果指定 `_all` 可以查询所有的�
 
 默认情况下，Get 操作会返回 source 的全部内容，除非你指定了 `fields` 参数或者 `_source` 字段被禁用。你可通过设置 `_source` 字段禁止返回source中的内容：
 
-> curl -XGET 'http://localhost:9200/twitter/tweet/1?_source=false'
+```
+curl -XGET 'http://localhost:9200/twitter/tweet/1?_source=false'
+```
 
 如果你只需要 `_source` 中一两个字段，你可以使用 `_source_include` 或者 `_source_exclude` 参数设置包含或者过滤你需要的字段。这个在文档很大的时候可以节省网络开销。这两个参数都可以通过都好分割或使用通配符，例如：
 
-> curl -XGET 'http://localhost:9200/twitter/tweet/1?_source_include=*.id&_source_exclude=entities'
+```
+curl -XGET 'http://localhost:9200/twitter/tweet/1?_source_include=*.id&_source_exclude=entities'
+```
 
 如果你只想指定包含字段的花，可以使用更短的声明：
 
-> curl -XGET 'http://localhost:9200/twitter/tweet/1?_source=*.id,retweeted'
+```
+curl -XGET 'http://localhost:9200/twitter/tweet/1?_source=*.id,retweeted'
+```
 
 ## 字段
 
 Get 操作可以通过参数 `fileds` 指定返回一组设置存储(`store`)的字段。例如：
 
-> curl -XGET 'http://localhost:9200/twitter/tweet/1?fields=title,content'
+```
+curl -XGET 'http://localhost:9200/twitter/tweet/1?fields=title,content'
+```
 
 为了向后兼容，如果请求中的字段并没有被存储，他们将从 `_source` 字段获取（解析并获取），所以这个功能被 source 过滤取代了。
 
@@ -79,21 +91,29 @@ Get 操作可以通过参数 `fileds` 指定返回一组设置存储(`store`)的
 
 使用 `/{index}/{type}/{id}/_source` 来获取文档中的 source，不包含其他的元数据信息，例如：
 
-> curl -XGET 'http://localhost:9200/twitter/tweet/1/_source'
+```
+curl -XGET 'http://localhost:9200/twitter/tweet/1/_source'
+```
 
 你也可以通过 source 过滤 控制返回你需要的 source 的部分：
 
-> curl -XGET 'http://localhost:9200/twitter/tweet/1/_source?_source_include=*.id&_source_exclude=entities'
+```
+curl -XGET 'http://localhost:9200/twitter/tweet/1/_source?_source_include=*.id&_source_exclude=entities'
+```
 
 注意，`_source` 方式也可以通过使用 HTTP 的 HEAD 请求方法判断文档是否存在，例如：
 
-> curl -XHEAD -i 'http://localhost:9200/twitter/tweet/1/_source'
+```
+curl -XHEAD -i 'http://localhost:9200/twitter/tweet/1/_source'
+```
 
 ## 路由
 
 当索引文档的时候使用了路由，获取文档的时候也必须要提供路由值，例如：
 
-> curl -XGET 'http://localhost:9200/twitter/tweet/1?routing=kimchy'
+```
+curl -XGET 'http://localhost:9200/twitter/tweet/1?routing=kimchy'
+```
 
 上面的例子将能获取到文档id为1的tweet，但是会根据用户名路由。注意，如果没有提供正确的路由信息，就无法获取到文档
 （**译者批注：默认路由值是 ID ，路由值是 ID 的时候，GET 不加路由也没能获取到；如果分片只有一个的情况下 GET 也可以不提供路由，因为无论怎么算都只能路由到这一个分片**）

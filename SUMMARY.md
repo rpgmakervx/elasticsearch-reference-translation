@@ -19,3 +19,4 @@
 * [5 文档API](wen-dang-api.md)
  * [5.1 Index API](index-api.md)
  * [5.2 Get API](get-api.md)
+ * [5.3 Delete API](delete-api.md)

@@ -110,7 +110,7 @@ PUT /_cluster/settings
 ##### 第三步：单个节点停机并升级
 
 升级前关闭一个节点。
->注意：当使用 zip 或 tar 包升级，默认情况下 Elasticsearch home 目录下的 config，data，log，plugins 等目录都会被覆盖。
+> 注意：当使用 zip 或 tar 包升级，默认情况下 Elasticsearch home 目录下的 config，data，log，plugins 等目录都会被覆盖。
 最好解压到不同的目录，这样升级期间就不会删除原来的目录了。自定义的目录可以通过 path.conf 和 path.data 来设置。
  RPM 或 DEB 包会把目录放到 [合适的位置](https://www.elastic.co/guide/en/elasticsearch/reference/2.2/setup-dir-layout.html "Directory Layout")。
 
@@ -155,7 +155,7 @@ PUT /_cluster/settings
 请求监控：
 >GET _cat/recovery
 
-##### 第七部：重复上述步骤
+##### 第七步：重复上述步骤
 当集群稳定并且节点恢复后，对剩下的节点重复上述过程。
 
 ***
