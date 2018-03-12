@@ -39,6 +39,7 @@ Elasticsearch参考手册翻译，原文地址：[https://www.elastic.co/guide/e
  * [4.2 索引名日期格式支持](suo-yin-ming-ri-qi-ge-shi-zhi-chi.md)
  * [4.3 通用选项](tong-yong-xuan-xiang.md)
 * [5 文档API](wen-dang-api.md)
+ * [5.0 读写文档](du-xie-wen-dang.md)
  * [5.1 Index API](index-api.md)
  * [5.2 Get API](get-api.md)
  * [5.3 Delete API](delete-api.md)
