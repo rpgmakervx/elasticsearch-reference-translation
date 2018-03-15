@@ -43,3 +43,4 @@ Elasticsearch参考手册翻译，原文地址：[https://www.elastic.co/guide/e
  * [5.1 Index API](index-api.md)
  * [5.2 Get API](get-api.md)
  * [5.3 Delete API](delete-api.md)
+ * [5.4 Update API](update-api.md)
