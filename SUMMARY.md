@@ -22,3 +22,4 @@
  * [5.2 Get API](get-api.md)
  * [5.3 Delete API](delete-api.md)
  * [5.4 Update API](update-api.md)
+ * [5.5 Multi Get API](multi-get-api.md)
